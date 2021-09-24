@@ -18,6 +18,7 @@ def ps_print():
         print(proc.info)
         ps_count += 1
     print('[*] Total:', ps_count)
+    print()
     return ps_count
 
 def log_print(text):
@@ -38,8 +39,10 @@ sched = BlockingScheduler()
 @sched.scheduled_job('interval', seconds=15)
 def timed_job_15s():
     log_print('This job is run every fifteen seconds.')
-    ps_print()
-    print()
+    ps_current = ps_print()
+    if ps_current > ps_initial:
+        return
+    os.system("python worker.py")
 
 @sched.scheduled_job('interval', minutes=3)
 def timed_job_3m():
