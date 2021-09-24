@@ -1,12 +1,23 @@
+################################################################################
+
+import psutil
 import sys
 import logging
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-sched = BlockingScheduler()
+################################################################################
 
 print("hello world")
 sys.stdout.flush()
+
+#print(psutil.pids())
+for proc in psutil.process_iter(['pid', 'name', 'username']):
+    print(proc.info)
+
+################################################################################
+
+sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', seconds=15)
 def timed_job_15s():
@@ -29,3 +40,5 @@ def scheduled_job():
 
 
 sched.start()
+
+################################################################################
