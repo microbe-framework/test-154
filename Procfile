@@ -1,1 +1,1 @@
-clock: python clock.py --loglevel=INFO
+clock: python clock.py --loglevel=DEBUG
