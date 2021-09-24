@@ -6,6 +6,12 @@ import os
 import logging
 
 from apscheduler.schedulers.blocking import BlockingScheduler
+from dotenv import load_dotenv
+
+load_dotenv()
+BOT = os.getenv('BOT')
+if BOT is None:
+    BOT = 'bot.py'
 
 ################################################################################
 
@@ -43,7 +49,7 @@ def timed_job_15s():
     ps_current = ps_print()
     if ps_current > ps_count_initial:
         return
-    os.system("python worker.py")
+    os.system(f'python {BOT}')
 
 @sched.scheduled_job('interval', minutes=3)
 def timed_job_3m():
