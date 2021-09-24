@@ -40,7 +40,7 @@ sched = BlockingScheduler()
 def timed_job_15s():
     log_print('This job is run every fifteen seconds.')
     ps_current = ps_print()
-    if ps_current > ps_initial:
+    if ps_current > ps_count_initial:
         return
     os.system("python worker.py")
 
