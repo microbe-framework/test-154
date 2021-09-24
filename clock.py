@@ -8,12 +8,28 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 ################################################################################
 
-print("hello world")
+ps_count_initial = 0
+
+def ps_print():
+#   print(psutil.pids())
+    ps_count = 0
+    print('[*] Processes')
+    for proc in psutil.process_iter(['pid', 'name', 'username']):
+        print(proc.info)
+        ps_count += 1
+    print('[*] Total:', ps_count)
+    return ps_count
+
+def log_print(text):
+    print(text)
+    logging.debug(text)
+
+################################################################################
+
+print("Hello world!")
 sys.stdout.flush()
 
-#print(psutil.pids())
-for proc in psutil.process_iter(['pid', 'name', 'username']):
-    print(proc.info)
+ps_count_initial = ps_print()
 
 ################################################################################
 
@@ -21,22 +37,18 @@ sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', seconds=15)
 def timed_job_15s():
-    text = 'This job is run every fifteen seconds.'
-    print(text)
-    logging.debug(text)
+    log_print('This job is run every fifteen seconds.')
+    ps_print()
+    print()
 
 @sched.scheduled_job('interval', minutes=3)
 def timed_job_3m():
-    text = 'This job is run every three minutes.'
-    print(text)
-    logging.debug(text)
+    log_print('This job is run every three minutes.')
 
 #@sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
 @sched.scheduled_job('cron', hour=17)
 def scheduled_job():
-    text = 'This job is run every weekday at 5pm.'
-    print(text)
-    logging.debug(text)
+    log_print('This job is run every weekday at 5pm.')
 
 
 sched.start()
